@@ -10,8 +10,8 @@ public class App
 {
     public static void main( String[] args )
     {
-        String html = new Downloader().download("http://fotografersha.livejournal.com");
-        Parser parser = new Parser(html, "http://fotografersha.livejournal.com");
+        String html = new Downloader().download("lenta.ru");
+        Parser parser = new Parser(html, "lenta.ru");
 
         ArrayList<String> links = parser.getURLs();
         System.out.println(links);
