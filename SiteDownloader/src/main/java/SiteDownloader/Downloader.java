@@ -5,9 +5,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
+ 
 public class Downloader {
     public String download (String url){
         String validURL = null;
