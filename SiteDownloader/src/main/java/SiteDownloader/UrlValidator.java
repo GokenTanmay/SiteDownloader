@@ -9,15 +9,19 @@ public class UrlValidator {
         System.out.println(url);
 
         String validURL = null;
-        try {
-            validURL = new URL(url).toString();
-            System.out.println(validURL);
-        } catch (MalformedURLException e) {
-            if (e.getMessage().contains("no protocol")) {
-                validURL = "http://" + url;
-                System.out.println("Exceprion - " + validURL);
+        if (!url.contains("@")) { //Проверяем что входящий URL не является адрессом эл.почты.
+            if (!url.equals("#")) { //Проверяем что не пустая решетка.
+                try {
+                    validURL = new URL(url).toString();
+                    System.out.println(validURL);
+                } catch (MalformedURLException e) {
+                    if (e.getMessage().contains("no protocol")) {
+                        validURL = "http://" + url;
+                        System.out.println("Exceprion - " + validURL);
+                    }
+                    e.printStackTrace(); //TODO: добавить в логгирование.
+                }
             }
-            e.printStackTrace(); //TODO: добавить в логгирование.
         }
         return validURL;
     }

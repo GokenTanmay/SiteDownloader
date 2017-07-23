@@ -5,11 +5,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
- 
+
 public class Downloader {
-    public String download (String url){
+    public String download(String url) {
         String validURL = null;
-        String result = null;
+        String result = "";
 
         validURL = new UrlValidator().Validate(url);
 //        try {
@@ -21,18 +21,18 @@ public class Downloader {
 //            e.printStackTrace(); //TODO: добавить в логгирование.
 //        }
 
-        if (validURL != null){
+        if (validURL != null) {
             System.out.println(validURL);
-        }
 
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(validURL).build();
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder().url(validURL).build();
 
-        try {
-            Response response = client.newCall(request).execute();
-            result = response.body().string();
-        } catch (IOException e) {
-            e.printStackTrace(); //TODO: добавить в логгирование.
+            try {
+                Response response = client.newCall(request).execute();
+                result = response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace(); //TODO: добавить в логгирование.
+            }
         }
         return result;
     }

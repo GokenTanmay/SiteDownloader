@@ -20,17 +20,18 @@ public class Parser {
         ArrayList<String> result = new ArrayList<String>();
         Elements urls = doc.body().getElementsByTag("a");
         for (Element url : urls) {
-            if (url.attr("href").startsWith("/")) {
-                result.add(baseURI + url.attr("href"));
-            } else {
-                result.add(url.attr("href"));
+            if (!url.attr("href").equals("")) {
+                if (url.attr("href").startsWith("/")) {
+                    result.add(baseURI + url.attr("href"));
+                } else {
+                    result.add(url.attr("href"));
+                }
             }
-
         }
         return result;
     }
 
-    public String getTextOnly(){
+    public String getTextOnly() {
         return doc.body().text();
-    }
+    } //TODO: Исключить из выдачи текст ссылок.
 }

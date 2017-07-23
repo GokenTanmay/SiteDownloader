@@ -42,4 +42,7 @@ public class WebSpiderUrlRepository {
     public HashMap getHashMapScanedURL() {
         return scanedURL;
     }
+    public Integer getRepositorySize(){
+        return unscanedURL.size();
+    }
 }
