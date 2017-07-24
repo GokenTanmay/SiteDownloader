@@ -20,8 +20,11 @@ public class AppTest1 {
             e.printStackTrace();
         }
 
+        TextExctractor textExctractor  = new TextExctractor(sb.toString());
 
 
-        System.out.println(new TextExctractor().Extract(sb.toString()));
+        System.out.println(textExctractor.Extract());
+        System.out.println("");
+        System.out.println(textExctractor.getTmphtmlbody());
     }
 }
