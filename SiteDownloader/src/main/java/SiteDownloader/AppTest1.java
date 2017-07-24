@@ -20,11 +20,8 @@ public class AppTest1 {
             e.printStackTrace();
         }
 
-        TextExctractor textExctractor  = new TextExctractor(sb.toString());
+        Parser parser = new Parser(sb.toString(), "body");
 
-
-        System.out.println(textExctractor.Extract());
-        System.out.println("");
-        System.out.println(textExctractor.getTmphtmlbody());
+        System.out.println(parser.getTextOnly().replaceAll("[,.\n]", ""));
     }
 }
