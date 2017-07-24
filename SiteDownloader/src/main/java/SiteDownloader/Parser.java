@@ -31,6 +31,13 @@ public class Parser {
         return result;
     }
 
+    /**
+     * Метод возвращает текст очищенный следующим образом.
+     * все что между (<title>)(.*)(<\/title>)
+     * Удаляем (<meta content)(.*)(\/>)
+     * Удаляем все (<script)(.*)(<\/script>)
+     */
+
     public String getTextOnly() {
         return doc.body().text();
     } //TODO: Исключить из выдачи текст ссылок.
