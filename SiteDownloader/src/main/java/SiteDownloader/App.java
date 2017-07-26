@@ -11,7 +11,7 @@ public class App
     public static void main( String[] args )
     {
         WebSpiderUrlRepository webSpiderUrlRepository = new WebSpiderUrlRepository();
-        webSpiderUrlRepository.addUnscanedURL(new SpiderURL("lenta.ru", 2));
+        webSpiderUrlRepository.addUnscanedURL(new SpiderURL("lenta.ru", 0));
 
         SpiderURL scanSpiderURL;
         Integer count = 0;

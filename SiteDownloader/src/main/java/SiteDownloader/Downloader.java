@@ -30,6 +30,7 @@ public class Downloader {
             try {
                 Response response = client.newCall(request).execute();
                 result = response.body().string();
+                System.out.println(result.length());
             } catch (IOException e) {
                 e.printStackTrace(); //TODO: добавить в логгирование.
             }
