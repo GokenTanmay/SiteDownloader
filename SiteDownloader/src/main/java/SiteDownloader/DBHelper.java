@@ -3,9 +3,9 @@ package SiteDownloader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 public class DBHelper {
@@ -47,5 +47,50 @@ public class DBHelper {
         }
     }
 
+    /**
+     *@return Метод возвращает Id текущей выполняемой задачи для краулера. Если задачь с открытым endtime нет, то создает новую c текущим временем.
+     **/
+
+    public Integer getCurrentTaskId(){
+        Integer result = null;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+             ps = connectionToDB.prepareStatement("select idTasks from tasks where endtime is NULL");
+             rs = ps.executeQuery();
+            if (rs.next()){ //если запись есть то возвращаем ее id
+                result = rs.getInt(1);
+            } else { //иначе создаем новую задачу (запись в таблице) и возвращаем ее id.
+                ps = connectionToDB.prepareStatement("insert into tasks (startTime) VALUES (?)");
+                ps.setString(1,getCurrentDateTime());
+                ps.executeUpdate();
+                ps = connectionToDB.prepareStatement("select idTasks from tasks where endtime is NULL");
+                rs = ps.executeQuery();
+                if (rs.next()) { //если запись есть то возвращаем ее id
+                    result = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void closeTask(Integer taskId){
+        PreparedStatement ps;
+        try {
+            ps = connectionToDB.prepareStatement("update tasks set endTime=? WHERE idTasks="+taskId);
+            ps.setString(1,getCurrentDateTime());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String getCurrentDateTime() {    //выдает дату и время в текущий момент в формате для mysql
+        java.util.Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return simpleDateFormat.format(date);
+    }
 
 }
