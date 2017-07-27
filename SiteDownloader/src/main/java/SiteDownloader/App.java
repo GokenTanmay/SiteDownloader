@@ -11,7 +11,7 @@ public class App
     public static void main( String[] args )
     {
         WebSpiderUrlRepository webSpiderUrlRepository = new WebSpiderUrlRepository();
-        webSpiderUrlRepository.addUnscanedURL(new SpiderURL("lenta.ru", 0));
+        webSpiderUrlRepository.addUnscanedURL(new SpiderURL("lenta.ru", 5));
 
         SpiderURL scanSpiderURL;
         Integer count = 0;
@@ -20,11 +20,13 @@ public class App
             String html = new Downloader().download(scanSpiderURL.getUrl());
             Parser parser = new Parser(html, scanSpiderURL.getUrl());
             System.out.printf("===");
-            //System.out.println(parser.getTextOnly());
+            //System.out.println(parser.getTextOnly()); //TODO:Возможно запись в БД занимает много времени и разумнее сделать запись отсканированных урлов "пакетом"
 
             if (scanSpiderURL.getLevel()>0){
                 for (String url: parser.getURLs()) {
+                    System.out.println("начало записи в БД");
                     webSpiderUrlRepository.addUnscanedURL(new SpiderURL(url, scanSpiderURL.getLevel() - 1));
+                    System.out.println("конец записи в БД");
                 }
             }
             count++;

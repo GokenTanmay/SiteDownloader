@@ -18,5 +18,6 @@
     <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.13.0" level="project" />
     <orderEntry type="library" name="mysql-connector-java-5.1.41-bin" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-5.1.43-bin" level="project" />
   </component>
 </module>

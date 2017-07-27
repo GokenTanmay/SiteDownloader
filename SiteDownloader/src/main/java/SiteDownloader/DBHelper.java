@@ -108,14 +108,14 @@ public class DBHelper {
     }
 
     /**
-     *
      * @param workerUID - идентификатор краулера, для каждого запущенного приложения должен быть уникальным.
-     * @param limit - количество возвращаемых значений за раз.
+     * @param limit     - количество возвращаемых значений за раз.
      * @return - функция возвращает ArrayList<SpiderURL> полученных из базы, которые еще не были просканированны, но уже закреплены за данным workerом.
      */
 
     public ArrayList<SpiderURL> getUnscanedUrl(String workerUID, Integer limit) {
-        ArrayList<SpiderURL> result = null;
+
+        ArrayList<SpiderURL> result = new ArrayList<SpiderURL>();
         PreparedStatement ps;
         ResultSet rs;
 
@@ -123,14 +123,21 @@ public class DBHelper {
             ps = connectionToDB.prepareStatement("select url, deeplevel from tmpscanurls where scaned = 0 and worker = ?");
             ps.setString(1, workerUID);
             rs = ps.executeQuery();
+
+
             if (!rs.next()) { //Если нет записей помеченных для данного workera, то метим и требуем снова.
                 ps = connectionToDB.prepareStatement("update tmpscanurls set worker = ? where worker is null limit ?");
-                ps.setString(1,workerUID);
+                ps.setString(1, workerUID);
                 ps.setInt(2, limit);
-                ps.executeUpdate();
-                result = getUnscanedUrl(workerUID,limit);
+                if(ps.executeUpdate()>0) { //Проверяем что для кого то применилось, иначе список проверен полностью.
+                    result = getUnscanedUrl(workerUID, limit);
+                }
             } else { //TODO: засовываем полученные результаты в result.
-                z\sdasdasdaz\c
+                rs.beforeFirst(); // перемещает указатель на строку перед первой.
+                while(rs.next()){
+                    System.out.println("getUnscanedUrl");
+                    result.add(new SpiderURL(rs.getString(1),rs.getInt(2)));
+                }
             }
 
         } catch (SQLException e) {
@@ -138,6 +145,22 @@ public class DBHelper {
         }
 
         return result;
+    }
+
+    /**
+     * Метод устанавливает статус URL scaned=1 использовать после сканирования страницы.
+     * @param url - URL для которого необходимо установить данный статус.
+     */
+    public void setStatusScaned(String url){
+        PreparedStatement ps;
+        try {
+            ps = connectionToDB.prepareStatement("update tmpscanurls set scaned = 1 where url = ?");
+            ps.setString(1, url);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private String getCurrentDateTime() {    //выдает дату и время в текущий момент в формате для mysql

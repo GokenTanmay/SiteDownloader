@@ -1,5 +1,6 @@
 package SiteDownloader;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -8,10 +9,14 @@ import java.util.HashMap;
 public class WebSpiderUrlRepository {
     private HashMap unscanedURL;
     private HashMap scanedURL;
+    private DBHelper dbHelper;
+    ArrayList<SpiderURL> spiderURLS;
 
     public WebSpiderUrlRepository() {
         unscanedURL = new HashMap();
         scanedURL = new HashMap();
+        dbHelper = new DBHelper();
+        spiderURLS = new ArrayList<SpiderURL>();
     }
 
     /**
@@ -20,9 +25,10 @@ public class WebSpiderUrlRepository {
      * @param spiderURL - Класс описывающий URL и глубину его сслыки
      */
     public void addUnscanedURL(SpiderURL spiderURL) {
-        if ((!unscanedURL.containsKey(spiderURL.getUrl())) && (!scanedURL.containsKey(spiderURL.getUrl()))) {
-            unscanedURL.put(spiderURL.getUrl(), spiderURL.getLevel());
-        }
+        dbHelper.addUnscanedURL(spiderURL.getUrl(),spiderURL.getLevel());
+//        if ((!unscanedURL.containsKey(spiderURL.getUrl())) && (!scanedURL.containsKey(spiderURL.getUrl()))) {
+//            unscanedURL.put(spiderURL.getUrl(), spiderURL.getLevel());
+
     }
 
     /**
@@ -30,12 +36,22 @@ public class WebSpiderUrlRepository {
      */
     public SpiderURL getUnscanedURL() {
         SpiderURL result = null;
-        if (unscanedURL.entrySet().iterator().hasNext()) {
-            HashMap.Entry<String, Integer> firstEntry = (HashMap.Entry<String, Integer>) unscanedURL.entrySet().iterator().next();
-            result = new SpiderURL(firstEntry.getKey(), firstEntry.getValue());
-            unscanedURL.remove(firstEntry.getKey());
-            scanedURL.put(firstEntry.getKey(), firstEntry.getValue());
+        if(spiderURLS.size() == 0){
+            if((spiderURLS = dbHelper.getUnscanedUrl("wrk1", 100)).size() == 0){ //TODO: сделать определение UID воркера.
+                return null;
+            }
         }
+
+        result = spiderURLS.get(0);
+        spiderURLS.remove(0);
+        dbHelper.setStatusScaned(result.getUrl());
+
+//        if (unscanedURL.entrySet().iterator().hasNext()) {
+//            HashMap.Entry<String, Integer> firstEntry = (HashMap.Entry<String, Integer>) unscanedURL.entrySet().iterator().next();
+//            result = new SpiderURL(firstEntry.getKey(), firstEntry.getValue());
+//            unscanedURL.remove(firstEntry.getKey());
+//            scanedURL.put(firstEntry.getKey(), firstEntry.getValue());
+//        }
         return result;
     }
 

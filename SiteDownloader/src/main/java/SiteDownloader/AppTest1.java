@@ -3,6 +3,7 @@ package SiteDownloader;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AppTest1 {
@@ -41,8 +42,20 @@ public class AppTest1 {
         System.out.println(i);
         //dbHelper.closeTask(i);
 
-        dbHelper.addUnscanedURL("http://test1.url", 5);
+        dbHelper.addUnscanedURL("http://test1.url", 1);
+        dbHelper.addUnscanedURL("http://test2.url", 2);
+        dbHelper.addUnscanedURL("http://test3.url", 3);
         dbHelper.addUnscanedURL("http://test4.url", 4);
+        dbHelper.addUnscanedURL("http://test5.url", 5);
+
+        ArrayList<SpiderURL> spiderURLS = dbHelper.getUnscanedUrl("wrkUID1", 2);
+
+        for (SpiderURL spiderURL:spiderURLS) {
+            System.out.println(spiderURL.getUrl());
+            dbHelper.setStatusScaned(spiderURL.getUrl());
+        }
+
+
 
     }
 }
