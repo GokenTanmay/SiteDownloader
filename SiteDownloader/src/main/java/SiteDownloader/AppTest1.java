@@ -37,6 +37,9 @@ public class AppTest1 {
 //        System.out.println(hashMap.get("1"));
 
         DBHelper dbHelper = new DBHelper();
+        Integer i = dbHelper.getCurrentTaskId();
+        System.out.println(i);
+        //dbHelper.closeTask(i);
 
     }
 }
