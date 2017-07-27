@@ -41,5 +41,8 @@ public class AppTest1 {
         System.out.println(i);
         //dbHelper.closeTask(i);
 
+        dbHelper.addUnscanedURL("http://test1.url", 5);
+        dbHelper.addUnscanedURL("http://test4.url", 4);
+
     }
 }
